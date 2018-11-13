@@ -37,8 +37,7 @@ echo <<<_END
 			{
 				try { request = new ActiveXObject("Microsoft.XMLHTTP") }
 				catch(e3) 
-				{
-					request = false
+				{					request = false
 				} 
 			} 
 		}

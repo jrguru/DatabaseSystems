@@ -151,6 +151,7 @@ INSERT INTO Admin(User_Name) VALUES ('srayfield');
 UPDATE Users SET Admin_ID = (SELECT Admin_ID FROM Admin WHERE User_Name = 'srayfield') WHERE User_name = 'srayfield';
 UPDATE Admin SET University_ID = (SELECT University_ID FROM University_Profiles WHERE University_Name = 'UCF') WHERE User_Name = 'srayfield';
 
+
 INSERT INTO Users (User_Name, First_Name, Last_Name, Password) VALUES ('brayfield', 'Beverly', 'Rayfield', 'veteran');
 INSERT INTO Admin(User_Name) VALUES ('brayfield');
 UPDATE Users SET Admin_ID = (SELECT Admin_ID FROM Admin WHERE User_Name = 'brayfield') WHERE User_name = 'brayfield';
@@ -398,7 +399,7 @@ INSERT INTO Events( Description,
 								(SELECT University_ID FROM Admin WHERE Admin_ID = (SELECT Admin_ID FROM RSO WHERE RSO_Name = 'UCF Programming Team' ))
 								);
 
-/*UCF 		TKE Red Carnation Ball*/						
+/*UCF 		TKE Red Carnation Ball RSO only event*/						
 INSERT INTO Events( Description, 
 					Start_Time, 
 					End_Time, 
@@ -424,8 +425,34 @@ INSERT INTO Events( Description,
 								(SELECT RSO_ID FROM RSO WHERE RSO_Name = 'Tau Kappa Epsilon'),
 								(SELECT University_ID FROM Admin WHERE Admin_ID = (SELECT Admin_ID FROM RSO WHERE RSO_Name = 'Tau Kappa Epsilon' ))
 								);
+								
+INSERT INTO Events( Description, 
+					Start_Time, 
+					End_Time, 
+					Event_Location, 
+					Contact_Email, 
+					Contact_Phone, 
+					Event_Name, 
+					Event_Type, 
+					Event_Visible, 
+					Admin_ID, 
+					RSO_ID,
+					University_ID) VALUES
+								('UCF Tau Kappa Epsilon Movie Night', 
+								'2018-12-19 18:00:00', 
+								'2018-12-19 22:30:00', 
+								'ClassRoom1', 
+								'Tke@ucf.edu', 
+								'407-999-9999', 
+								'2018 TKE Movie Night', 
+								'Social', 
+								'Pri', 
+								(SELECT Admin_ID FROM RSO WHERE RSO_Name = 'Tau Kappa Epsilon'), 
+								(SELECT RSO_ID FROM RSO WHERE RSO_Name = 'Tau Kappa Epsilon'),
+								(SELECT University_ID FROM Admin WHERE Admin_ID = (SELECT Admin_ID FROM RSO WHERE RSO_Name = 'Tau Kappa Epsilon' ))
+								);								
 
-								/*Tau Delta Tau Fundraiser Event*/								
+								/*USF Tau Delta Tau Fundraiser Event*/								
 INSERT INTO Events( Description, 
 					Start_Time, 
 					End_Time, 
@@ -477,6 +504,32 @@ INSERT INTO Events( Description,
 								(SELECT RSO_ID FROM RSO WHERE RSO_Name = 'USF Chess Team'),
 								(SELECT University_ID FROM Admin WHERE Admin_ID = (SELECT Admin_ID FROM RSO WHERE RSO_Name = 'USF Chess Team' ))
 								);
+/*USF TDT Early alumni meet and greet private event*/
+INSERT INTO Events( Description, 
+					Start_Time, 
+					End_Time, 
+					Event_Location, 
+					Contact_Email, 
+					Contact_Phone, 
+					Event_Name, 
+					Event_Type, 
+					Event_Visible, 
+					Admin_ID, 
+					RSO_ID,
+					University_ID) VALUES
+								('Private meeting between USF alumni and new alumni', 
+								'2018-12-08 17:00:00', 
+								'2018-12-08 19:30:00', 
+								'Student Union', 
+								'admin@usf.edu', 
+								'407-999-9999', 
+								'USF Early Alum Meet and Greet', 
+								'Fundraising', 
+								'Pri', 
+								(SELECT Admin_ID FROM RSO WHERE RSO_Name = 'Tau Delta Tau'), 
+								(SELECT RSO_ID FROM RSO WHERE RSO_Name = 'Tau Delta Tau'),
+								(SELECT University_ID FROM Admin WHERE Admin_ID = (SELECT Admin_ID FROM RSO WHERE RSO_Name = 'Tau Delta Tau' ))
+								);
 		/*FAU Rugby Team*/					
 INSERT INTO Events( Description, 
 					Start_Time, 
@@ -516,6 +569,22 @@ select * from Student_RSO_List;
     ROUP BY rso_id;
 */
 
+
+/*Create a trigger to ensure events cannot overlap at the same location and time*/
+/*
+DELIMITER $$
+CREATE TRIGGER before_events_insert
+    BEFORE INSERT ON Events
+    FOR EACH ROW 
+BEGIN
+    INSERT INTO employees_audit
+    SET action = 'update',
+     employeeNumber = OLD.employeeNumber,
+        lastname = OLD.lastname,
+        changedat = NOW(); 
+END$$
+DELIMITER ;
+*/
 /*Create three comments per event*/
 
 

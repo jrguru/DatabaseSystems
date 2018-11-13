@@ -7,7 +7,7 @@ require_once 'functions.php';
 
 $error = $contact_phone = $contact_email = $event_name = "";
 $event_description = $event_type = $event_visible = $event_location = $start_time = $end_time = $rso_ID = "";
-
+$flag = true;
 
   //if we have a proper session user then grab the user name 
   if(isset($_SESSION['user']))
@@ -58,7 +58,30 @@ if ($result->num_rows != 0)
 		$end_time = sanitizeString($_POST['end_time']);
 		$rso_ID = sanitizeString($_POST['rso_ID']);
 		
-		//if they have an associated rso id then sanitize that as well
+		//check if they are the admin of the RSO_ID they input
+		//if they have put a value in the entry box below
+		if($rso_ID != "")
+		{
+			//we grab the admin id from each table in the database
+				$rso_check = queryMysql("SELECT Admin_ID FROM RSO WHERE RSO_ID = '$rso_ID'");
+				$admin_check = queryMysql("SELECT Admin_ID FROM Admin WHERE User_name = '$user'");
+			//now if the rso_check returns a row (which it should) we compare the two values
+			if($rso_check->num_rows != 0 && $admin_check->num_rows != 0)
+			{
+				$row_r = $rso_check->fetch_assoc();
+				$row_a = $admin_check->fetch_assoc();
+				
+				//if the values don't match then we will set our flag to false and let the know they can't admin that RSO
+				if($row_r['Admin_ID'] != $row_a['Admin_ID'] )
+				{
+				$flag = false;
+				$error = "You are not the administrator of that RSO<br>";
+				}
+		
+			}else{
+				$error = "Invalid RSO number<br>";
+			}
+		}
 		
 		if($contact_email == "" || $contact_phone == "" || $event_name == ""  || $event_description == "" ||$event_type == "" ||$event_visible == "" || $event_location == "" || $start_time == "" || $end_time == "" )
 		{
@@ -66,7 +89,7 @@ if ($result->num_rows != 0)
 		}
 		else{//input the event into the database.  If there is an associated RSO account for that.
 			//We have an RSO attached to the event
-			if($rso_ID != ""){
+			if($rso_ID != "" && $flag){
 			queryMysql("INSERT INTO Events(
 					Description, 
 					Event_Location, 

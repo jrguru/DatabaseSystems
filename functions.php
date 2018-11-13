@@ -1,5 +1,5 @@
 <?php //functions.php
-  $dbhost  = 'localhost';    // Unlikely to require changing
+  $dbhost  = '127.0.0.1';    // Unlikely to require changing
   $dbname  = 'ucf';   // Modify these...
   $dbuser  = 'root';   // ...variables according
   $dbpass  = 'password';   // ...to your installation
@@ -7,6 +7,11 @@
   $connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
   if ($connection->connect_error) die("Fatal Error");
 
+  
+  function createDatabase($name){
+	  queryMysql("CREATE DATABASE $name");
+	  queryMysql("USE $name");
+  }
   function createTable($name, $query)
   {
     queryMysql("CREATE TABLE IF NOT EXISTS $name($query)");
@@ -16,21 +21,27 @@
   //create the foreign keys for our tables
   function alterTable($name, $foreign_key, $primary_table, $primary_key )
   {
-	  queryMysql("ALTER TABLE $name ADD FOREIGN KEY ($foreign_key) REFERENCES $primary_table($primary_key) ON DELETE CASCADE");
+	  queryMysql("ALTER TABLE $name ADD FOREIGN KEY ($foreign_key) REFERENCES $primary_table($primary_key) ON DELETE RESTRICT ON UPDATE CASCADE");
 	  echo "Table '$name' altered.<br>";
   }
 
-  function addUser($userName, $first_name, $last_name, $password){
-	  queryMysql("INSERT INTO Users (User_Name, First_Name, Last_Name, Password) VALUES ($userName, $first_name, $last_name, $password)");
-	  echo "User '$userName' added.<br>";
-  }
+  
 	
 	
   function queryMysql($query)
   {
     global $connection;
     $result = $connection->query($query);
+	//echo "$result";
     if (!$result) die("Fatal Error...");
+    return $result;
+  }
+  function queryMysqlnodie($query)
+  {
+    global $connection;
+    $result = $connection->query($query);
+	//echo "$result";
+    
     return $result;
   }
 

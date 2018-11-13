@@ -36,7 +36,8 @@ _INIT;
     $userstr  = "Logged in as: $user";
   }
   else $loggedin = FALSE;
-echo <<<_MAIN
+
+  echo <<<_MAIN
     <title>University Event Manager: $userstr</title>
   </head>
   <body>
@@ -54,17 +55,14 @@ _MAIN;
 		  switch($role){
 				case "Admin":
 					echo <<<_LOGGEDIN
-					<div class='center'>
-					<a data-role='button' data-inline='true' data-icon='user'
-					data-transition="slide" href='create_rso.php?view=$user'>Create RSO</a>
-				  
+				   <div class='center'>
 					<a data-role='button' data-inline='true' data-icon='plus'
 					data-transition="slide" href='create_events.php'>Create Event</a>
 				  
 					<a data-role='button' data-inline='true' data-icon='action'
 					data-transition="slide" href='logout.php'>Log out</a>
 					</div>
-_LOGGEDIN;	
+_LOGGEDIN;
 				break;
 				
 				case "Super":
@@ -84,10 +82,17 @@ _LOGGEDIN;
 				echo <<<_LOGGEDIN
 				<div class='center'>
 				  <a data-role='button' data-inline='true' data-icon='home'
-					data-transition="slide" href='search_events.php?view=$user'>Search Events</a>
+					data-transition="slide" href='view_events.php?view=$user'>View Events</a>
 				  
 				  <a data-role='button' data-inline='true' data-icon='user'
 					data-transition="slide" href='join_rso.php'>Join RSO</a>
+					
+				<div class='center'>
+				<a data-role='button' data-inline='true' data-icon='user'
+				data-transition="slide" href='create_rso.php?view=$user'>Create RSO</a>
+					
+				  <a data-role='button' data-inline='true' data-icon='plus'
+					data-transition="slide" href='comments.php'>Comments</a>
 				  
 				  <a data-role='button' data-inline='true' data-icon='action'
 					data-transition="slide" href='logout.php'>Log out</a>
@@ -110,7 +115,7 @@ _LOGGEDIN;
 							data-transition="slide" href='login.php'>Log In</a>
 						</div>
 						<p class='info'>(You must be logged in to use this app)</p>
-_GUEST; 
+_GUEST;
   }
   
   

@@ -51,7 +51,12 @@ if ($result->num_rows != 0) {
     while($row = $result->fetch_assoc()) 
 	{
 		
-        echo "University ID: " . $row["University_ID"]. "   Name: " . $row["University_Name"]. "   " . "Number of students: " . $row["Num_Students"]. "  Location: " . $row["University_Location"] . " " . "Description: " . $row["Description"] . "<br>";
+        echo "University ID: " . $row["University_ID"]. "<br>";
+		echo "Name: " . $row["University_Name"]. "<br>";
+		echo "Number of students: " . $row["Num_Students"]. "<br>";  
+		echo "Location: " . $row["University_Location"] . "<br>"; 
+		echo "Description: " . $row["Description"] . "<br>";
+		echo "<hr>";
     }
 } else {
     echo "0 results";

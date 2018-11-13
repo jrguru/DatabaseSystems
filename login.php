@@ -11,7 +11,7 @@
 	if ($user == "" || $pass == "" || $role == "")
 	{
         $error = 'Not all fields were entered...';
-	}
+	}else{
     //check the selected role in the database and that the login and password is good
 	
 		switch($role){
@@ -77,25 +77,7 @@
 				
 		}
 		
-		//The proper role of the user has been verified, we can go ahead and grab their username, password role and save it
-		//to the session
-		/*
-		$result = queryMySQL("SELECT User_Name,Password FROM Users WHERE User_name='$user' AND Password='$pass'");
-		
-		if($result->num_rows == 0)
-		{
-			$error = "Not a valid login or password";
-		}
-		else
-        {
-        $_SESSION['user'] = $user;
-        $_SESSION['pass'] = $pass;
-		$_SESSION['role'] = $role;
-        die("<div class='center'>You are now logged in. Please
-             <a data-transition='slide' href='members.php?view=$user'>click here</a>
-             to continue.</div></div></body></html>");
-        }
-		*/
+	}
   }
 	
 
