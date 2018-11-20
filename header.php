@@ -92,7 +92,7 @@ _LOGGEDIN;
 				data-transition="slide" href='create_rso.php?view=$user'>Create RSO</a>
 					
 				  <a data-role='button' data-inline='true' data-icon='plus'
-					data-transition="slide" href='comments.php'>Comments</a>
+					data-transition="slide" href='create_comments.php'>Comment on an Event</a>
 				  
 				  <a data-role='button' data-inline='true' data-icon='action'
 					data-transition="slide" href='logout.php'>Log out</a>

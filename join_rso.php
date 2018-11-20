@@ -1,6 +1,8 @@
 <?php //Join RSO Form
 require_once 'header.php';
 require_once 'functions.php';
+
+$rso_name = $error = "";
 //Provide a list of RSO's that are joinable
 //Provide a form so that the User can request to join the RSO
 if(isset($_SESSION['user']))
@@ -32,4 +34,59 @@ if ($RSO_result->num_rows != 0)
 	{
 		echo "Sorry, there are no avaible RSO's";
 	}
+	
+	if ( isset($_POST['rso_name']) )
+	{
+		//sanitize the user input
+		$rso_name = sanitizeString($_POST['rso_name']);
+		
+		
+		/*
+		echo $comment_to_modify;
+		echo $comment_number_to_modify;
+		echo $rating_to_modify;
+		*/
+		
+		//check if the user input is empty
+		if($rso_name == "" )
+		{
+			$error = 'Not all fields were entered.<br><br>';
+		}else
+		{
+			
+			//insert the student into the student_rso_list table
+			queryMysql("INSERT INTO student_rso_list (Student_ID, RSO_ID) VALUES 
+			((SELECT student_ID from student where user_name = '$user'), 
+			 (SELECT RSO_ID from rso where rso_name = '$rso_name'))");
+			echo "RSO: $rso_name successfully joined<br><br>";
+		}
+		
+	}
+	
+	
+	
+	echo <<<_ADD
+      <form method='post' action='join_rso.php'>
+        <div data-role='fieldcontain'>
+          <label></label>
+          <span class='error'>$error</span>
+        </div>
+        <div data-role='fieldcontain'>
+          <label></label>
+          Enter an RSO Name to Join
+        </div>
+		<div data-role='fieldcontain'>
+          <label>RSO Name :</label>
+          <input type='text' maxlength='100' name='rso_name' value='$rso_name'>
+        </div>
+		<div data-role='fieldcontain'>
+          <label></label>
+          <input data-transition='slide' type='submit' value='Submit'>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
+_ADD;
+	
 ?>

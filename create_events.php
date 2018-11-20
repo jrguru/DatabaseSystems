@@ -88,8 +88,11 @@ if ($result->num_rows != 0)
 			$error = 'Not all fields were entered.<br><br>';
 		}
 		else{//input the event into the database.  If there is an associated RSO account for that.
+			
 			//We have an RSO attached to the event
-			if($rso_ID != "" && $flag){
+			if($rso_ID != "" && $flag)
+			{
+				
 			queryMysql("INSERT INTO Events(
 					Description, 
 					Event_Location, 
@@ -130,6 +133,7 @@ if ($result->num_rows != 0)
 		}
 		
 	}
+echo "Date/Time/Location Conflict";
 
 echo <<<_ADD
       <form method='post' action='create_events.php'>

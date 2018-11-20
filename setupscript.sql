@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS Comments (
   Student_ID INT,
   Comments VARCHAR(100),
   Stars INT,
+  University_ID INT,
   PRIMARY KEY (Comment_ID)
   
 );
@@ -114,7 +115,7 @@ ALTER TABLE Events ADD FOREIGN KEY (University_ID) REFERENCES University_Profile
 
 ALTER TABLE Comments ADD FOREIGN KEY (Event_ID) REFERENCES Events(Event_ID) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE Comments ADD FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID) ON DELETE RESTRICT ON UPDATE CASCADE;
-
+ALTER TABLE Comments ADD FOREIGN KEY (University_ID) REFERENCES University_Profiles(University_ID) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 											/*CREATE OUR SUPERUSER*/
 INSERT INTO Users (User_Name, First_Name, Last_Name, Password) VALUES ('jrayfield', 'Jamison', 'Rayfield', 'veteran');
@@ -504,6 +505,33 @@ INSERT INTO Events( Description,
 								(SELECT RSO_ID FROM RSO WHERE RSO_Name = 'USF Chess Team'),
 								(SELECT University_ID FROM Admin WHERE Admin_ID = (SELECT Admin_ID FROM RSO WHERE RSO_Name = 'USF Chess Team' ))
 								);
+								
+INSERT INTO Events( Description, 
+					Start_Time, 
+					End_Time, 
+					Event_Location, 
+					Contact_Email, 
+					Contact_Phone, 
+					Event_Name, 
+					Event_Type, 
+					Event_Visible, 
+					Admin_ID, 
+					RSO_ID,
+					University_ID) VALUES
+								('USF Chess Team Members only meeting', 
+								'2018-12-13 17:00:00', 
+								'2018-12-13 19:30:00', 
+								'ClassRoom1', 
+								'admin@usf.edu', 
+								'407-999-9999', 
+								'USF Chess Team Members only meeting', 
+								'Social', 
+								'RSO', 
+								(SELECT Admin_ID FROM RSO WHERE RSO_Name = 'USF Chess Team'), 
+								(SELECT RSO_ID FROM RSO WHERE RSO_Name = 'USF Chess Team'),
+								(SELECT University_ID FROM Admin WHERE Admin_ID = (SELECT Admin_ID FROM RSO WHERE RSO_Name = 'USF Chess Team' ))
+								);
+								
 /*USF TDT Early alumni meet and greet private event*/
 INSERT INTO Events( Description, 
 					Start_Time, 
@@ -562,7 +590,25 @@ select * from Student_RSO_List;
 								
 /*Comments for an Event that has already occured with a rating*/
 
-/*Code to return the number of distinct students per RSO*/
+
+/*add the foreign key to the Comments table*/
+
+
+
+INSERT INTO Comments (Event_ID, Student_ID, Comments, Stars, University_ID) VALUES (1, 1, "This was a another great swim team meet and greet!", 4, 1);
+INSERT INTO Comments (Event_ID, Student_ID, Comments, Stars, University_ID) VALUES (1, 2, "Awsome event set up by the UCF swim team!", 4, 1);
+INSERT INTO Comments (Event_ID, Student_ID, Comments, Stars, University_ID) VALUES (1, 4, "I wish there was more chicks!", 2, 1);
+INSERT INTO Comments (Event_ID, Student_ID, Comments, Stars, University_ID) VALUES (2, 1, "Who know programmers were so lame!", 2, 1);
+INSERT INTO Comments (Event_ID, Student_ID, Comments, Stars, University_ID) VALUES (2, 2, "The tech talk was pretty interesting.", 3, 1);
+INSERT INTO Comments (Event_ID, Student_ID, Comments, Stars, University_ID) VALUES (7, 11, "I hate being a USF early alum, no one showed up!", 1, 2);
+INSERT INTO Comments (Event_ID, Student_ID, Comments, Stars, University_ID) VALUES (7, 10, "I wish there was more opportunity for the USF alumni", 2, 2);
+INSERT INTO Comments (Event_ID, Student_ID, Comments, Stars, University_ID) VALUES (7, 14, "USF needs to get their act together on this event", 1, 2);
+
+
+
+
+
+/*Code to return the number of distinct students per RSO*
 /*
 	SELECT rso_id, COUNT(DISTINCT student_id)
     FROM student_rso_list
